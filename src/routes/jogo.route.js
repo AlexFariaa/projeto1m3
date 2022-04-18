@@ -1,5 +1,5 @@
 const routes = require('express').Router();
-const controllerJogos = require('../controllers/jogo.controller')
+const controllerJogos = require('../controllers/jogo.controller');
 
 routes.get('/categorias', controllerJogos.findAllJogosController);
 routes.get('/categorias/:id', controllerJogos.findByIdJogosController);

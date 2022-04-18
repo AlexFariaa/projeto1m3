@@ -30,32 +30,32 @@ const findAllJogosService = () => {
 };
 
 const findByIdJogosService = (parametroId) => {
-    return jogo = jogos.find((jogo) => jogo.id === parametroId);
-}
+  return (jogo = jogos.find((jogo) => jogo.id === parametroId));
+};
 
 const createJogoService = (newJogo) => {
   const newId = jogos.length + 1;
   newJogo.id = newId;
   jogos.push(newJogo);
   return newJogo;
-}
+};
 
 const updateJogoService = (idParam, jogoEdit) => {
   jogoEdit['id'] = idParam;
   const jogoIndex = jogos.findIndex((jogo) => jogo.id == idParam);
   jogos[jogoIndex] = jogoEdit;
-  return jogoEdit
-}
+  return jogoEdit;
+};
 
 const deleteJogoService = (idParam) => {
   const jogoIndex = jogos.findIndex((jogo) => jogo.id == idParam);
-  return jogos.splice(jogoIndex, 1)
-}
+  return jogos.splice(jogoIndex, 1);
+};
 
 module.exports = {
-    findAllJogosService,
-    findByIdJogosService,
-    createJogoService,
-    updateJogoService,
-    deleteJogoService
-}
+  findAllJogosService,
+  findByIdJogosService,
+  createJogoService,
+  updateJogoService,
+  deleteJogoService,
+};
