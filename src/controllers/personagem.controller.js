@@ -1,32 +1,91 @@
 const peronsagensService = require('../services/personagem.service');
+const mongoose = require('mongoose');
 
-const findAllPersonagensController = (req, res) => {
-  const personagens = peronsagensService.findAllPersonagensService();
-  res.send(personagens);
+const findAllPersonagensController = async (req, res) => {
+  const allPersonagens = await peronsagensService.findAllallPersonagensService();
+
+  if (allPersonagens.length == 0) {
+    res.status(404).send({ message: 'Personagens não encontrado' });
+  }
+
+  res.send(allPersonagens);
 };
 
-const findByIdPersonagensController = (req, res) => {
-  const parametroId = Number(req.params.id);
-  const personagem = peronsagensService.findByIdPersonagensService(parametroId);
-  res.send(personagem);
+const findByIdPersonagensController = async (req, res) => {
+  const parametroId = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(parametroId)) {
+    return res.status(400).send({ message: 'Id inválido' });
+  }
+
+  const onePersonagem = await peronsagensService.findByIdPersonagensService(
+    parametroId,
+  );
+
+  if (!onePersonagem) {
+    return res.status(404).send({ message: 'Id não encontrado' });
+  }
+
+  res.send(onePersonagem);
 };
 
-const createPersonagensController = (req, res) => {
+const createPersonagensController = async (req, res) => {
   const personagem = req.body;
-  const newPersonagem = peronsagensService.createPersonagemService(personagem);
-  res.send(newPersonagem);
+
+  if (
+    !personagem ||
+    !personagem.nome ||
+    !personagem.foto ||
+    !personagem.descricao ||
+    !personagem.origem
+  ) {
+    return res
+      .status(400)
+      .send({ message: 'envie todos os campos do personagem!' });
+  }
+
+  const newPersonagem = await peronsagensService.createPersonagemService(
+    personagem,
+  );
+  res.status(201).send(newPersonagem);
 };
 
-const updatePersonagensController = (req, res) => {
-  const idParam = +req.params.id;
-  const personagemEdit = req.body;
-  const updatedPersonagem = peronsagensService.updatePersonagemService(idParam, personagemEdit);
+const updatePersonagensController = async (req, res) => {
+  const idParam = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(idParam)) {
+    res.status(404).send({ message: 'ID não encontrado' });
+  }
+  const editPersonagem = req.body;
+
+  if (
+    !editPersonagem ||
+    !editPersonagem.nome ||
+    !editPersonagem.foto ||
+    !editPersonagem.descricao ||
+    !editPersonagem.origem
+  ) {
+    res.status(400).send({ message: 'Envie todos os campos para alterar' });
+  }
+
+  const updatedPersonagem = await peronsagensService.updatePersonagemService(
+    idParam,
+    editPersonagem,
+  );
+
   res.send(updatedPersonagem);
 };
 
-const deletePersonagensController = (req, res) => {
+const deletePersonagensController = async (req, res) => {
   const idParam = req.params.id;
-  peronsagensService.deletePersonagemService(idParam);
+  
+  if (!mongoose.Types.ObjectId.isValid(idParam)) {
+    res.status(404).send({ message: 'ID não encontrado' });
+  }
+
+  await peronsagensService.deletePersonagemService(idParam);
+
+
   res.send({ message: 'Jogo deletado com sucesso!' });
 };
 

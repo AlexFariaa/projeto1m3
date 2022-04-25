@@ -1,52 +1,27 @@
-const personagens = [
-  {
-    id: 1,
-    nome: 'Thommy Shelby',
-    foto: '',
-    descricao: 'Lider da gangue',
-    serie: 'Peaky Blinders',
-  },
-  {
-    id: 2,
-    nome: 'Polly Gray',
-    foto: '',
-    descricao: 'Tia',
-    serie: 'Peaky Blinders',
-  },
-  {
-    id: 3,
-    nome: 'Arthur Shelby',
-    foto: '',
-    descricao: 'Irmao mais velho',
-    serie: 'Peaky Blinders',
-  },
-];
+const Personagens = require('../models/Personagem');
 
-const findAllPersonagensService = () => {
-  return personagens;
+const findAllPersonagensService = async () => {
+  const allPersonagens = await Personagens.find();
+  return allPersonagens;
 };
 
-const findByIdPersonagensService = (parametroId) => {
-  return (personagem = personagens.find((personagem) => personagem.id === parametroId));
+const findByIdPersonagensService = async (idParam) => {
+  const onePersonagem = await Personagens.findById(idParam);
+  return onePersonagem;
 };
 
-const createPersonagemService = (newPersonagem) => {
-  const newId = personagens.length + 1;
-  newPersonagem.id = newId;
-  personagens.push(newPersonagem);
-  return newPersonagem;
+const createPersonagemService = async (newPersonagem) => {
+  const createdPersonagem = await Personagens.create(newPersonagem)
+  return createdPersonagem;
 };
 
-const updatePersonagemService = (idParam, personagemEdit) => {
-  personagemEdit['id'] = idParam;
-  const personagemIndex = personagens.findIndex((personagem) => personagem.id == idParam);
-  personagens[personagemIndex] = personagemEdit;
-  return personagemEdit;
+const updatePersonagemService = async (idParam, EditPersonagem) => {
+  const updatePersonagem = await Personagens.findByIdAndUpdate(idParam, EditPersonagem)
+  return updatePersonagem;
 };
 
-const deletePersonagemService = (idParam) => {
-  const personagemIndex = personagens.findIndex((personagem) => personagem.id == idParam);
-  return personagens.splice(personagemIndex, 1);
+const deletePersonagemService = async (idParam) => {
+  return await Personagens.findByIdAndDelete(idParam)
 };
 
 module.exports = {
