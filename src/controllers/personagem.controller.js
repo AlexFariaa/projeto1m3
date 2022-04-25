@@ -12,14 +12,10 @@ const findAllPersonagensController = async (req, res) => {
 };
 
 const findByIdPersonagensController = async (req, res) => {
-  const parametroId = req.params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(parametroId)) {
-    return res.status(400).send({ message: 'Id inválido' });
-  }
+  const idParam = req.params.id;
 
   const onePersonagem = await peronsagensService.findByIdPersonagensService(
-    parametroId,
+    idParam,
   );
 
   if (!onePersonagem) {
@@ -31,19 +27,6 @@ const findByIdPersonagensController = async (req, res) => {
 
 const createPersonagensController = async (req, res) => {
   const personagem = req.body;
-
-  if (
-    !personagem ||
-    !personagem.nome ||
-    !personagem.foto ||
-    !personagem.descricao ||
-    !personagem.origem
-  ) {
-    return res
-      .status(400)
-      .send({ message: 'envie todos os campos do personagem!' });
-  }
-
   const newPersonagem = await peronsagensService.createPersonagemService(
     personagem,
   );
@@ -52,21 +35,7 @@ const createPersonagensController = async (req, res) => {
 
 const updatePersonagensController = async (req, res) => {
   const idParam = req.params.id;
-
-  if (!mongoose.Types.ObjectId.isValid(idParam)) {
-    res.status(404).send({ message: 'ID não encontrado' });
-  }
   const editPersonagem = req.body;
-
-  if (
-    !editPersonagem ||
-    !editPersonagem.nome ||
-    !editPersonagem.foto ||
-    !editPersonagem.descricao ||
-    !editPersonagem.origem
-  ) {
-    res.status(400).send({ message: 'Envie todos os campos para alterar' });
-  }
 
   const updatedPersonagem = await peronsagensService.updatePersonagemService(
     idParam,
@@ -78,13 +47,8 @@ const updatePersonagensController = async (req, res) => {
 
 const deletePersonagensController = async (req, res) => {
   const idParam = req.params.id;
-  
-  if (!mongoose.Types.ObjectId.isValid(idParam)) {
-    res.status(404).send({ message: 'ID não encontrado' });
-  }
 
   await peronsagensService.deletePersonagemService(idParam);
-
 
   res.send({ message: 'Personagem deletado com sucesso!' });
 };
