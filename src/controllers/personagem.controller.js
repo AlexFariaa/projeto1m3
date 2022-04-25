@@ -2,7 +2,7 @@ const peronsagensService = require('../services/personagem.service');
 const mongoose = require('mongoose');
 
 const findAllPersonagensController = async (req, res) => {
-  const allPersonagens = await peronsagensService.findAllallPersonagensService();
+  const allPersonagens = await peronsagensService.findAllPersonagensService();
 
   if (allPersonagens.length == 0) {
     res.status(404).send({ message: 'Personagens não encontrado' });
@@ -86,7 +86,7 @@ const deletePersonagensController = async (req, res) => {
   await peronsagensService.deletePersonagemService(idParam);
 
 
-  res.send({ message: 'Jogo deletado com sucesso!' });
+  res.send({ message: 'Personagem deletado com sucesso!' });
 };
 
 module.exports = {
